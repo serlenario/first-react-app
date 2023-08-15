@@ -24,7 +24,7 @@ const EmployeesAddForm = ({ onAdd }) => {
 
 	return (
 		<div className='app-add-form'>
-			<h3>Добавьте нового сотрудника</h3>
+			<h3>Add a new employee</h3>
 			<form
 				className='add-form d-flex'
 				onSubmit={e => {
@@ -37,14 +37,14 @@ const EmployeesAddForm = ({ onAdd }) => {
 				<input
 					type='text'
 					className='form-control new-post-label'
-					placeholder='Как его зовут?'
+					placeholder='What is his name?'
 					name='name'
 					onChange={onNameChange}
 				/>
 				<input
 					type='number'
 					className='form-control new-post-label'
-					placeholder='З/П в $?'
+					placeholder='Salary in $?'
 					name='salary'
 					onChange={onSalaryChange}
 				/>

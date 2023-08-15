@@ -8,7 +8,7 @@ const SearchPanel = ({ onUpdateSearch }) => {
 		<input
 			type='text'
 			className='form-control search-input'
-			placeholder='Найти сотрудника'
+			placeholder='Find an employee'
 			onChange={e => {
 				setSearch(e.target.value);
 				onUpdateSearch(e.target.value);
