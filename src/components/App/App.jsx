@@ -32,42 +32,107 @@ const App = () => {
 		},
 	];
 
-	const [newData, setData] = useState(data);
-	const maxId = newData.length;
+	const [newData, setData] = useState({
+		data,
+		searchString: '',
+		filter: 'all',
+	});
+	const { data: employees, searchString, filter } = newData;
+
+	const maxId = employees.length;
 
 	const deleteItem = id => {
-		const updatedData = newData.filter(elem => elem.id !== id);
+		const updatedData = employees.filter(elem => elem.id !== id);
 
-		setData(updatedData);
+		setData(prev => {
+			return { ...prev, data: updatedData };
+		});
 	};
 
 	const addItem = newItem => {
-		const namesArr = newData.map(data => {
+		const namesArr = employees.map(data => {
 			return data.name;
 		});
 
 		if (!namesArr.includes(newItem.name)) {
 			newItem.id = maxId + 1;
-			const updatedData = [...newData, newItem];
-			setData(updatedData);
+			const updatedData = [...employees, newItem];
+			setData(prev => {
+				return { ...prev, data: updatedData };
+			});
 		}
 	};
 
 	const toggle = (id, toggleItem) => {
-		console.log(toggleItem);
-		const toggledItem = newData.map(item => {
+		const toggledItem = employees.map(item => {
 			if (item.id === id) {
 				item[toggleItem] = !item[toggleItem];
 			}
 			return item;
 		});
 
-		setData(toggledItem);
+		setData(prev => {
+			return { ...prev, data: toggledItem };
+		});
 	};
 
-	const increasedEmployees = newData.filter(employ => {
+	const increasedEmployees = employees.filter(employ => {
 		if (employ.increase) return employ;
 	});
+
+	const searchEmployees = (employees, searchString) => {
+		if (searchString.length === 0) return employees;
+
+		return employees.filter(employ => {
+			return employ.name.indexOf(searchString) > -1;
+		});
+	};
+
+	const onUpdateSearch = searchString => {
+		setData(prev => {
+			return { ...prev, searchString };
+		});
+	};
+
+	const filterPost = (employees, filter) => {
+		if (filter === 'rise') {
+			return employees.filter(employ => {
+				return employ.rise;
+			});
+		}
+
+		if (filter === 'moreThen1000') {
+			return employees.filter(employ => {
+				return employ.salary > 1000;
+			});
+		}
+
+		return employees;
+	};
+
+	const onFilterSelect = filter => {
+		setData(prev => {
+			return { ...prev, filter };
+		});
+	};
+
+	const onChangeSalary = (salary, id) => {
+		const updateEmployees = employees.map(item => {
+			if (item.id === id) {
+				console.log(parseInt(salary));
+				item.salary = parseInt(salary);
+			}
+			return item;
+		});
+		setData(prev => {
+			return { ...prev, updateEmployees };
+		});
+	};
+
+	const visibleData = filterPost(
+		searchEmployees(employees, searchString),
+		filter
+	);
 
 	return (
 		<div className='app'>
@@ -77,11 +142,16 @@ const App = () => {
 			/>
 
 			<div className='search-panel'>
-				<SearchPanel />
-				<AppFilter />
+				<SearchPanel onUpdateSearch={onUpdateSearch} />
+				<AppFilter filter={filter} onFilterSelect={onFilterSelect} />
 			</div>
 
-			<EmployeesList data={newData} onDelete={deleteItem} onToggle={toggle} />
+			<EmployeesList
+				data={visibleData}
+				onDelete={deleteItem}
+				onToggle={toggle}
+				onChangeSalary={onChangeSalary}
+			/>
 			<EmployeesAddForm onAdd={addItem} />
 		</div>
 	);

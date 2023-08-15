@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './EmloyeesListItem.css';
 
 const EmployeesListItem = ({
@@ -5,9 +6,12 @@ const EmployeesListItem = ({
 	salary,
 	onDelete,
 	onToggle,
+	onChangeSalary,
 	increase,
 	rise,
 }) => {
+	// const [value, setSalary] = useState('');
+
 	let className = 'list-group-item d-flex justify-content-between';
 
 	if (increase) {
@@ -31,6 +35,7 @@ const EmployeesListItem = ({
 				type='text'
 				className='list-group-item-input'
 				defaultValue={salary + '$'}
+				onChange={onChangeSalary}
 			/>
 			<div className='d-flex justify-content-center align-items-center'>
 				<button
