@@ -50,7 +50,7 @@ const EmployeesAddForm = ({ onAdd }) => {
 				/>
 
 				<button type='submit' className='btn btn-outline-light'>
-					Добавить
+					Add
 				</button>
 			</form>
 		</div>
